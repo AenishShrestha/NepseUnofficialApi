@@ -23,5 +23,5 @@ RUN pip install gunicorn
 EXPOSE 8007
 
 # Run the application using gunicorn
-CMD ["gunicorn", "--bind", "0.0.0.0:8007", "NepseServer:app"]
+CMD ["gunicorn", "--bind", "0.0.0.0:8007", "example.NepseServer:app"]
 
