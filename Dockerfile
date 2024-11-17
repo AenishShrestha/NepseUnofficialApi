@@ -1,5 +1,6 @@
 FROM python:3.9-slim
 
+# Set the working directory inside the container
 WORKDIR /app
 
 # Install dependencies
@@ -9,17 +10,17 @@ RUN apt-get update && \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
-# Create and copy requirements.txt
-RUN echo "fastapi==0.78.0\nuvicorn==0.17.6\nrequests==2.31.0\nbeautifulsoup4==4.12.0\npandas==2.0.0\npython-dateutil==2.8.2\naiohttp==3.8.5" > requirements.txt
-
-# Install Python packages
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Copy the application code
+# Copy the application files into the container
 COPY . .
 
-# Set the port
-ENV PORT=8007
+# Install the required Python packages
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Run the application
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8007"]
+# Install gunicorn
+RUN pip install gunicorn
+
+# Expose the port that your Flask app will run on
+EXPOSE 8007
+
+# Run the application using gunicorn
+CMD ["gunicorn", "--bind", "0.0.0.0:8007", "NepseServer:app"]
