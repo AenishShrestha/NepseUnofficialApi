@@ -7,4 +7,6 @@ python-dateutil==2.8.2
 aiohttp==3.8.5
 Flask
 gunicorn
-httpx
+pywasm==1.0.8
+httpx[http2]==0.27.2
+tqdm==4.66.5
