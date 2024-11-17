@@ -1,21 +1,20 @@
-FROM python:3.9-slim
+FROM python:3.10-slim  # Change to Python 3.10
 
 # Set the working directory inside the container
 WORKDIR /app
 
-# Install system dependencies and clean up apt cache
+# Install dependencies
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     build-essential \
-    curl && \
-    rm -rf /var/lib/apt/lists/*
+    curl \
+    && rm -rf /var/lib/apt/lists/*
 
 # Copy the application files into the container
 COPY . .
 
-# Upgrade pip and install the required Python packages
-RUN pip install --upgrade pip && \
-    pip install --no-cache-dir -r requirements.txt
+# Install the required Python packages
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Install gunicorn
 RUN pip install gunicorn
