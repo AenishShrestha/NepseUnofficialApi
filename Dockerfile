@@ -8,21 +8,17 @@ RUN apt-get update && apt-get install -y \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy only requirements first
-COPY requirements.txt .
+# Copy the requirements file
+COPY requirements.txt requirements.txt
 
-# Install Python dependencies
+# Install Python packages
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the rest of the application
+# Copy the application code
 COPY . .
 
-# Set environment variables
-ENV PYTHONUNBUFFERED=1
-ENV PYTHONPATH=/app
+# Set the port
+ENV PORT=8007
 
-# Expose port 8007
-EXPOSE 8007
-
-# Command to run the application
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8007"]
+# Run the application
+CMD uvicorn main:app --host 0.0.0.0 --port ${PORT}
